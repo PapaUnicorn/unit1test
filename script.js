@@ -53,8 +53,52 @@ function showScreen(screen) {
   screen.classList.add('active');
 }
 
+function isFullscreenActive() {
+  return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+}
+
+function enterFullscreen() {
+  const el = document.documentElement;
+  const request = el.requestFullscreen
+    ? el.requestFullscreen.bind(el)
+    : el.webkitRequestFullscreen
+      ? el.webkitRequestFullscreen.bind(el)
+      : el.msRequestFullscreen
+        ? el.msRequestFullscreen.bind(el)
+        : null;
+  if (!request) return;
+  const result = request();
+  if (result && typeof result.catch === 'function') {
+    result.catch(() => {});
+  }
+}
+
+function exitFullscreenIfActive() {
+  if (!isFullscreenActive()) return;
+  const exit = document.exitFullscreen
+    ? document.exitFullscreen.bind(document)
+    : document.webkitExitFullscreen
+      ? document.webkitExitFullscreen.bind(document)
+      : document.msExitFullscreen
+        ? document.msExitFullscreen.bind(document)
+        : null;
+  if (!exit) return;
+  const result = exit();
+  if (result && typeof result.catch === 'function') {
+    result.catch(() => {});
+  }
+}
+
+function handleFullscreenChange() {
+  if (!isFullscreenActive() && quizActive) {
+    score = 0;
+    finishQuiz();
+  }
+}
+
 function backToStart() {
   quizActive = false;
+  exitFullscreenIfActive();
   showScreen(startScreen);
 }
 
@@ -433,6 +477,7 @@ function goToNext() {
 
 function finishQuiz() {
   quizActive = false;
+  exitFullscreenIfActive();
   if (score === 0) {
     showScreen(warningScreen);
   } else {
@@ -476,6 +521,7 @@ infoForm.addEventListener('submit', (e) => {
   studentName = fullNameInput.value.trim();
   studentGrade = gradeInput.value.trim();
   if (!studentName || !studentGrade) return;
+  enterFullscreen();
   startQuiz();
 });
 
@@ -483,3 +529,6 @@ nextBtn.addEventListener('click', goToNext);
 retryBtn.addEventListener('click', backToStart);
 warningRetryBtn.addEventListener('click', backToStart);
 document.addEventListener('visibilitychange', handleVisibilityChange);
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('msfullscreenchange', handleFullscreenChange);
