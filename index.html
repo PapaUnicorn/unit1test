@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 Test</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- Start screen: student info -->
+    <section id="start-screen" class="screen active">
+      <h1>Unit 1 Test</h1>
+      <form id="info-form" class="info-form">
+        <div class="field">
+          <label for="full-name">Full Name</label>
+          <input type="text" id="full-name" placeholder="Enter your full name" required autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="grade">Grade</label>
+          <input type="text" id="grade" placeholder="Enter your grade" required autocomplete="off">
+        </div>
+        <div class="notice">
+          <strong>Important:</strong> Once the test begins, do not switch tabs, minimize the window, or leave this page. Doing so will automatically end your test with a score of 0.
+        </div>
+        <button type="submit" class="btn">Start Test</button>
+      </form>
+    </section>
+
+    <!-- Quiz screen -->
+    <section id="quiz-screen" class="screen">
+      <div class="quiz-subheader">
+        <span id="question-counter"></span>
+        <span id="section-title"></span>
+      </div>
+      <div class="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+      <div id="passage-panel" class="passage-panel">
+        <h3 id="passage-title"></h3>
+        <div id="passage-text"></div>
+      </div>
+      <h2 id="question-text"></h2>
+      <div id="options-container"></div>
+      <div class="quiz-nav">
+        <button id="next-btn" class="btn" disabled>Next</button>
+      </div>
+    </section>
+
+    <!-- Normal results screen -->
+    <section id="result-screen" class="screen">
+      <h1>Test Complete</h1>
+      <div class="score-card" id="score-card">
+        <div class="student-name-display" id="student-name-display"></div>
+        <div class="student-meta" id="student-meta"></div>
+        <div class="overall-score" id="overall-score"></div>
+        <div class="score-breakdown" id="score-breakdown"></div>
+      </div>
+      <p class="screenshot-hint">Screenshot this screen as proof of your score.</p>
+      <button id="retry-btn" class="btn">Back to Start</button>
+    </section>
+
+    <!-- 0 points warning screen -->
+    <section id="warning-screen" class="screen">
+      <div class="warning-box">
+        <div class="warning-icon">&#9888;</div>
+        <h1>You Got 0 Points.</h1>
+        <h2>Your Test Has Ended</h2>
+        <button id="warning-retry-btn" class="btn btn-danger">Back to Start</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
